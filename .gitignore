@@ -1,0 +1,18 @@
+# Segredos — NUNCA subir para o GitHub
+.streamlit/secrets.toml
+
+# Dados de usuários (local)
+data/users.json
+
+# Ambiente virtual
+.venv/
+venv/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.tmp
+
+# Logs
+*.log
