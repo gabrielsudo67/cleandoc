@@ -6,8 +6,8 @@ Bem-vindo ao **CleanDoc**. Estes Termos regem o uso do site **https://cleandoc.s
 
 ### 1. Quem oferece o serviço
 
-- **Responsável:** _[PREENCHER: nome completo do responsável]_
-- **Contato:** juridicoia2026@gmail.com
+- **Responsável:** Gabriel Leite
+- **Contato:** [PREENCHER: e-mail de contato]
 
 ### 2. O que é o CleanDoc
 
@@ -30,7 +30,7 @@ O pagamento é processado pelo **Mercado Pago** (Pix, cartão ou boleto). O pre�
 
 ### 5. Direito de arrependimento (7 dias)
 
-**Você pode desistir da compra do Premium em até 7 (sete) dias corridos a contar do pagamento, sem precisar justificar e sem qualquer custo, conforme o art. 49 do Código de Defesa do Consumidor.** Para isso, basta enviar um pedido para **juridicoia2026@gmail.com**. O reembolso será processado e comunicado ao Mercado Pago para estorno. Se você já tiver utilizado de forma substancial os recursos Premium no período, o reembolso poderá ser proporcional à parte não utilizada.
+**Você pode desistir da compra do Premium em até 7 (sete) dias corridos a contar do pagamento, sem precisar justificar e sem qualquer custo, conforme o art. 49 do Código de Defesa do Consumidor.** Para isso, basta enviar um pedido para **[PREENCHER: e-mail de contato]**. O reembolso será processado e comunicado ao Mercado Pago para estorno. Se você já tiver utilizado de forma substancial os recursos Premium no período, o reembolso poderá ser proporcional à parte não utilizada.
 
 ### 6. Uso correto e responsabilidade sobre os arquivos
 
@@ -70,4 +70,4 @@ Aplica-se a lei brasileira. **Fica eleito o foro do domicílio do consumidor par
 
 ---
 
-_Dúvidas? Fale com a gente: **juridicoia2026@gmail.com**._
+_Dúvidas? Fale com a gente: **[PREENCHER: e-mail de contato]**._

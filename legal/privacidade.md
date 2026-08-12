@@ -8,8 +8,8 @@ Esta Política explica como o **CleanDoc** ("nós") trata os seus dados pessoais
 
 O responsável pelo tratamento dos seus dados é:
 
-- **Responsável:** _[PREENCHER: nome completo do responsável]_
-- **E-mail de contato / Encarregado de dados:** juridicoia2026@gmail.com
+- **Responsável:** Gabriel Leite
+- **E-mail de contato / Encarregado de dados:** [PREENCHER: e-mail de contato]
 
 Para qualquer assunto sobre privacidade ou sobre seus dados, use o e-mail acima.
 
@@ -67,7 +67,7 @@ Você pode, a qualquer momento e gratuitamente:
 - Revogar consentimento e se opor a tratamentos;
 - Saber com quem compartilhamos.
 
-Para exercer qualquer direito, escreva para **juridicoia2026@gmail.com**. Respondemos em até **15 dias** (art. 18, §5º, LGPD).
+Para exercer qualquer direito, escreva para **[PREENCHER: e-mail de contato]**. Respondemos em até **15 dias** (art. 18, §5º, LGPD).
 
 ### 9. Segurança
 
@@ -87,4 +87,4 @@ Podemos atualizar esta Política. Mudanças relevantes serão comunicadas no sit
 
 ---
 
-_Em caso de dúvida sobre seus dados, fale com a gente: **juridicoia2026@gmail.com**._
+_Em caso de dúvida sobre seus dados, fale com a gente: **[PREENCHER: e-mail de contato]**._

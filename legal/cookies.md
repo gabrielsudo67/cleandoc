@@ -33,4 +33,4 @@ Se passarmos a usar novos tipos de cookies (por exemplo, analíticos), atualizar
 
 ---
 
-_Dúvidas sobre cookies? Fale com a gente: **juridicoia2026@gmail.com**._
+_Dúvidas sobre cookies? Fale com a gente: **[PREENCHER: e-mail de contato]**._
