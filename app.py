@@ -491,7 +491,7 @@ def render_admin_panel():
             import pandas as pd
             df = pd.DataFrame({"cadastros": list(by_day.values())},
                               index=list(by_day.keys()))
-            st.bar_chart(df)
+            st.bar_chart(df, color="#9a9da6")
         except Exception:
             st.write(by_day)
 
