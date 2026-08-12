@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import io
 import zipfile
+from pathlib import Path
 
 import streamlit as st
 from PIL import Image
@@ -29,6 +30,16 @@ from src.engine.pdf_cleaner import (
 
 APP_NAME = "CleanDoc"
 TAGLINE = "Remova marcas d'água de documentos e imagens com qualidade profissional."
+
+_LEGAL_DIR = Path(__file__).resolve().parent / "legal"
+
+
+def load_legal(filename: str) -> str:
+    """Carrega um documento legal (Markdown) da pasta legal/."""
+    try:
+        return (_LEGAL_DIR / filename).read_text(encoding="utf-8")
+    except Exception:
+        return "Documento indisponível no momento."
 
 # --------------------------------------------------------------------------- #
 # Configuração da página
@@ -224,15 +235,23 @@ def render_landing():
                 name = st.text_input("Nome", key="su_name")
                 email_s = st.text_input("E-mail", key="su_email")
                 pw_s = st.text_input("Senha (mín. 6 caracteres)", type="password", key="su_pw")
+                accept = st.checkbox(
+                    "Li e aceito os Termos de Uso e a Política de Privacidade",
+                    key="su_accept",
+                )
                 submitted_s = st.form_submit_button("Criar conta grátis", use_container_width=True)
             if submitted_s:
-                ok, msg = auth.register(email_s, pw_s, name)
-                if ok:
-                    st.session_state.user_email = email_s.strip().lower()
-                    st.success(msg)
-                    st.rerun()
+                if not accept:
+                    st.error("Você precisa aceitar os Termos de Uso e a Política de Privacidade para criar a conta.")
                 else:
-                    st.error(msg)
+                    ok, msg = auth.register(email_s, pw_s, name)
+                    if ok:
+                        st.session_state.user_email = email_s.strip().lower()
+                        st.success(msg)
+                        st.rerun()
+                    else:
+                        st.error(msg)
+            st.caption("Ao criar conta, você concorda com os documentos disponíveis no rodapé desta página.")
         st.markdown("</div>", unsafe_allow_html=True)
 
     # ---- Cartões de planos ----
@@ -253,6 +272,21 @@ def render_landing():
         for p in PREMIUM.perks:
             st.markdown(f"✓ {p}")
         st.markdown("</div>", unsafe_allow_html=True)
+
+    # ---- Rodapé legal ----
+    render_legal_footer()
+
+
+def render_legal_footer():
+    """Rodapé com os documentos legais (LGPD/CDC)."""
+    st.divider()
+    st.caption(f"© 2026 {APP_NAME} · Documentos legais")
+    with st.expander("📄 Política de Privacidade"):
+        st.markdown(load_legal("privacidade.md"))
+    with st.expander("📄 Termos de Uso"):
+        st.markdown(load_legal("termos.md"))
+    with st.expander("📄 Política de Cookies"):
+        st.markdown(load_legal("cookies.md"))
 
 
 # =========================================================================== #
@@ -457,6 +491,8 @@ def render_app(user: dict):
                 st.caption(f"ℹ️ {r['note']}")
             st.download_button(f"⬇️ Baixar {r['out_name']}", r["out_bytes"], r["out_name"],
                                r["mime"], use_container_width=True, key=f"dl_{idx}")
+
+    render_legal_footer()
 
 
 # =========================================================================== #
