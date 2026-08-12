@@ -221,7 +221,7 @@ def render_landing():
             with st.form("login_form"):
                 email = st.text_input("E-mail", key="login_email")
                 password = st.text_input("Senha", type="password", key="login_pw")
-                submitted = st.form_submit_button("Entrar", use_container_width=True)
+                submitted = st.form_submit_button("Entrar", width="stretch")
             if submitted:
                 ok, msg = auth.authenticate(email, password)
                 if ok:
@@ -239,7 +239,7 @@ def render_landing():
                     "Li e aceito os Termos de Uso e a Política de Privacidade",
                     key="su_accept",
                 )
-                submitted_s = st.form_submit_button("Criar conta grátis", use_container_width=True)
+                submitted_s = st.form_submit_button("Criar conta grátis", width="stretch")
             if submitted_s:
                 if not accept:
                     st.error("Você precisa aceitar os Termos de Uso e a Política de Privacidade para criar a conta.")
@@ -307,7 +307,7 @@ def render_app(user: dict):
             f'<span class="pill {pill}">Plano {plan.name}</span>',
             unsafe_allow_html=True,
         )
-        if st.button("Sair", use_container_width=True):
+        if st.button("Sair", width="stretch"):
             logout(); st.rerun()
 
         st.divider()
@@ -334,12 +334,12 @@ def render_app(user: dict):
             st.markdown("**🔓 Quer mais?**")
             st.caption(f"Premium ({PREMIUM.price_label}): até {PREMIUM.max_file_mb}MB "
                        f"e lote de {PREMIUM.max_files_batch} arquivos.")
-            if st.button("⭐ Obter Premium", use_container_width=True):
+            if st.button("⭐ Obter Premium", width="stretch"):
                 st.session_state.show_upgrade = True
 
         if is_admin(user["email"]):
             st.divider()
-            if st.button("📊 Painel do Dono", use_container_width=True):
+            if st.button("📊 Painel do Dono", width="stretch"):
                 st.session_state.show_admin = True
                 st.rerun()
 
@@ -361,7 +361,7 @@ def render_app(user: dict):
                     price=PREMIUM.price, base_url=_base_url(),
                 )
                 if ok:
-                    st.link_button("💳 Pagar com Mercado Pago", url, use_container_width=True)
+                    st.link_button("💳 Pagar com Mercado Pago", url, width="stretch")
                     st.caption("Você será levado ao ambiente seguro do Mercado Pago e "
                                "voltará ao CleanDoc após o pagamento.")
                 else:
@@ -473,7 +473,7 @@ def render_app(user: dict):
             for r in ok:
                 zf.writestr(r["out_name"], r["out_bytes"])
         st.download_button(f"⬇️ Baixar todos ({len(ok)}) em .zip", zbuf.getvalue(),
-                           "documentos_limpos.zip", "application/zip", use_container_width=True)
+                           "documentos_limpos.zip", "application/zip", width="stretch")
         st.divider()
 
     for idx, r in enumerate(results):
@@ -484,13 +484,13 @@ def render_app(user: dict):
             st.markdown(f'<span class="pill pill-free">{r["badge"]}</span>', unsafe_allow_html=True)
             cb, ca = st.columns(2, gap="large")
             with cb:
-                st.subheader("Antes"); st.image(r["before"], use_container_width=True)
+                st.subheader("Antes"); st.image(r["before"], width="stretch")
             with ca:
-                st.subheader("Depois"); st.image(r["after"], use_container_width=True)
+                st.subheader("Depois"); st.image(r["after"], width="stretch")
             if r.get("note"):
                 st.caption(f"ℹ️ {r['note']}")
             st.download_button(f"⬇️ Baixar {r['out_name']}", r["out_bytes"], r["out_name"],
-                               r["mime"], use_container_width=True, key=f"dl_{idx}")
+                               r["mime"], width="stretch", key=f"dl_{idx}")
 
     render_legal_footer()
 
@@ -535,7 +535,7 @@ def render_admin_panel():
         rows = [{"E-mail": u.get("email"), "Nome": u.get("name"),
                  "Plano": u.get("plan", "free"), "Cadastro": str(u.get("created_at", ""))[:10]}
                 for u in users]
-        st.dataframe(rows, use_container_width=True)
+        st.dataframe(rows, width="stretch")
 
     if st.button("← Voltar ao app"):
         st.session_state.show_admin = False
