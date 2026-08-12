@@ -16,6 +16,7 @@ from PIL import Image
 from src import auth
 from src import exporters
 from src import payments
+from src import stats
 from src.plans import FREE, PREMIUM, get_plan
 from src.engine.image_cleaner import CleanConfig, clean_image
 from src.engine.pdf_cleaner import (
@@ -145,6 +146,19 @@ def _base_url() -> str:
         return str(st.secrets["app"]["base_url"]).strip() or "http://localhost:8501"
     except Exception:
         return "http://localhost:8501"
+
+
+def _admin_emails() -> set[str]:
+    """E-mails com acesso ao Painel do Dono (definidos em secrets [app].admin_email)."""
+    try:
+        raw = st.secrets["app"]["admin_email"]
+        return {e.strip().lower() for e in str(raw).split(",") if e.strip()}
+    except Exception:
+        return set()
+
+
+def is_admin(email: str) -> bool:
+    return email.strip().lower() in _admin_emails()
 
 
 def handle_payment_return():
@@ -288,6 +302,13 @@ def render_app(user: dict):
                        f"e lote de {PREMIUM.max_files_batch} arquivos.")
             if st.button("⭐ Obter Premium", use_container_width=True):
                 st.session_state.show_upgrade = True
+
+        if is_admin(user["email"]):
+            st.divider()
+            if st.button("📊 Painel do Dono", use_container_width=True):
+                st.session_state.show_admin = True
+                st.rerun()
+
         st.caption("Processamento 100% local no servidor. Arquivos não são compartilhados.")
 
     config = CleanConfig(sensitivity=sensitivity, keep_dark=keep_dark,
@@ -439,9 +460,61 @@ def render_app(user: dict):
 
 
 # =========================================================================== #
+# Painel do Dono (somente admin)
+# =========================================================================== #
+def render_admin_panel():
+    st.markdown(
+        '<div class="hero"><h1>📊 Painel do Dono</h1>'
+        '<p>Visão geral do CleanDoc — visível apenas para você.</p></div>',
+        unsafe_allow_html=True,
+    )
+    users = stats.get_all_users()
+    s = stats.summarize(users, PREMIUM.price)
+    visits = stats.get_visit_count()
+
+    c1, c2, c3, c4 = st.columns(4)
+    c1.metric("👥 Cadastros", s["total"])
+    c2.metric("⭐ Premium", s["premium"])
+    c3.metric("💰 Receita estimada", f"R$ {s['revenue']:.2f}".replace(".", ","))
+    c4.metric("📈 Conversão", f"{s['conversion']:.1f}%")
+
+    if visits is not None:
+        st.metric("🔢 Visitas ao site", visits)
+    else:
+        st.caption("🔢 Contador de visitas: crie a tabela `visits` no Supabase para ativar "
+                   "(SQL fornecido pelo desenvolvedor).")
+
+    by_day = stats.signups_by_day(users)
+    if by_day:
+        st.subheader("Cadastros por dia")
+        try:
+            import pandas as pd
+            df = pd.DataFrame({"cadastros": list(by_day.values())},
+                              index=list(by_day.keys()))
+            st.bar_chart(df)
+        except Exception:
+            st.write(by_day)
+
+    with st.expander("Ver lista de cadastros"):
+        rows = [{"E-mail": u.get("email"), "Nome": u.get("name"),
+                 "Plano": u.get("plan", "free"), "Cadastro": str(u.get("created_at", ""))[:10]}
+                for u in users]
+        st.dataframe(rows, use_container_width=True)
+
+    if st.button("← Voltar ao app"):
+        st.session_state.show_admin = False
+        st.rerun()
+
+
+# =========================================================================== #
 # Roteamento
 # =========================================================================== #
 handle_payment_return()  # confirma pagamento se voltamos do Mercado Pago
+
+# Conta 1 visita por sessão (silencioso se a tabela `visits` não existir)
+if not st.session_state.get("_visit_counted"):
+    stats.record_visit()
+    st.session_state["_visit_counted"] = True
 
 _msg = st.session_state.pop("_pay_msg", None)
 if _msg:
@@ -451,5 +524,7 @@ if _msg:
 user = current_user()
 if user is None:
     render_landing()
+elif st.session_state.get("show_admin") and is_admin(user["email"]):
+    render_admin_panel()
 else:
     render_app(user)
